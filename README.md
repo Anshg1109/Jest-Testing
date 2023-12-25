@@ -1,6 +1,6 @@
-# User Management System
+# User Resource System
 
-This User Management System is a RESTful API built with Node.js, Express, MongoDB, and JWT authentication to handle user registration, authentication, updating user information, and user deletion.
+This User Resource System is a RESTful API built with Node.js, Express, MongoDB, and JWT authentication to handle user registration, authentication, updating user information, and user deletion.
 
 
 ## Features
