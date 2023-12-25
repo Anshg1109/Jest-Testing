@@ -14,6 +14,7 @@ jest.mock('bcrypt', () => ({
 
 describe('User Controller Tests', () => {
   let userId;
+  let accessToken;
 
   beforeAll(async () => {
     const user = await User.create({
@@ -85,12 +86,13 @@ describe('User Controller Tests', () => {
   // Test loginUser function - valid credentials
   it('should login a user with valid credentials', async () => {
     const userData = {
-      email: 'existing@example.com',
-      password: 'password123'
+      email: 'test@example.com',
+      password: 'testpassword'
     };
     const res = await request(app).post('/api/user/login').send(userData);
     expect(res.status).toBe(200);
     expect(res.body).toHaveProperty('accessToken');
+    accessToken = res.body.accessToken;
   });
 
 
@@ -118,6 +120,19 @@ describe('User Controller Tests', () => {
     expect(res.status).toBe(401);
   });
 
+  // Test UpdateUser function for valid token 
+  it('should return 200 and update a user with a valid token', async () => {
+    const updatedData = {
+      phone: '852741963'
+    };
+    const res = await request(app)
+      .put(`/api/user/${userId}`)
+      .set('Authorization', `Bearer ${accessToken}`)
+      .send(updatedData);
+    expect(res.status).toBe(200);
+    // Add assertions for the updated user data if needed
+  });
+
 
   // Test DeleteUser function for missing token field
   it('should return 401 for unauthorized operation', async () => {
@@ -125,5 +140,12 @@ describe('User Controller Tests', () => {
     expect(res.status).toBe(401);
   });
 
+  // Test DeleteUser function for valid token
+  it('should return 200 for successfully user deletion', async () => {
+    const res = await request(app)
+      .delete(`/api/user/${userId}`)
+      .set('Authorization', `Bearer ${accessToken}`);
+    expect(res.status).toBe(200);
+  });
 
 });

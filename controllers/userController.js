@@ -29,7 +29,6 @@ const registerUser = asyncHandler(async (req, res) => {
     role
   });
 
-  console.log(`User created ${user}`);
   if (user) {
     res.status(201).json({ _id: user.id, email: user.email });
   } else {
